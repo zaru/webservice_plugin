@@ -51,5 +51,17 @@ class WebserviceComponent extends Component {
 			$controller->viewClass = 'Webservice.Webservice';
 		}
 	}
-
+/**
+ * RequestHandler‚É‚æ‚Á‚ÄvieweClass‚ªæ‚ÁŽæ‚ç‚ê‚é‚Ì‚ÅA‚±‚Á‚¿‚ÅÄ“x‘‚«Š·‚¦‚é‚æ‚¤‚É‚·‚é
+ *
+ * @param object  A reference to the controller
+ * @return void
+ * @access public
+ * @link http://book.cakephp.org/view/65/MVC-Class-Access-Within-Components
+ */
+	public function beforeRender(&$controller) {
+		if (in_array($controller->request->ext, array('json', 'xml'))) {
+			$controller->viewClass = 'Webservice.Webservice';
+		}
+	}
 }
