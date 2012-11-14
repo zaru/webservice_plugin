@@ -2,6 +2,8 @@
 
 For those times when you need a quick and dirty webservice for your data.
 
+CakePHP2.2.xで使用したさいに、$this->viewClassがRequestHandlerによって書き換えられてしまい、うまく表示できなかったので、Component->initialize()で初期化するのではなくComponent->beforeRender()で書き換えるように修正。
+
 ## Background
 
 While working on a freelance app, I realized I was spending way too much time trying to create a well-maintained separation between the API and the frontend. There was no need to do this, the api users would figure out how to use it in time. So I decided to create a View class to auto-transform the data into JSON and XML. The result is the `Webservice View`.
@@ -53,6 +55,20 @@ Specify the extensions you'd like to parse in `Config/routes.php`, for example:
 	Router::parseExtensions('json');
 
 Attach the `Webservice Component` to your controller for an instant _automagic_ webservice:
+
+	<?php
+	class PostsController extends AppController {
+
+		public $components = array(
+			'RequestHandler',
+			'Webservice.Webservice'
+		);
+		public function index() {
+			$posts = array();
+			$this->set(compact('posts'));
+		}
+
+	}
 
 	<?php
 	class PostsController extends AppController {
