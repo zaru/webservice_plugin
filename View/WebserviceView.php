@@ -121,6 +121,13 @@ class WebserviceView extends View {
 			if (!$noXjson) {
 				$this->_header("X-JSON: " . $output);
 			}
+			
+			// JSONP
+			if (isset($this->request->query['callback']) && !empty($this->request->query['callback'])) {
+				App::uses('Sanitize', 'Utility');
+				$callbackFuncName = Sanitize::clean($this->request->query['callback']);
+				$output = sprintf("%s(%s);", $callbackFuncName, $output);
+			}
 
 			return sprintf($format, $output);
 		}
