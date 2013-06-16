@@ -2,7 +2,15 @@
 
 For those times when you need a quick and dirty webservice for your data.
 
-CakePHP2.2.xで使用したさいに、$this->viewClassがRequestHandlerによって書き換えられてしまい、うまく表示できなかったので、Component->initialize()で初期化するのではなくComponent->beforeRender()で書き換えるように修正。
+## The changed part which I performed 
+
+The fault which does not work is corrected when it is used by CakePHP2.2.x.
+
+It corresponds to the CallBack of JSONP.
+The example of use
+
+	http://localhost/hoge/index.json?callback=method
+
 
 ## Background
 
