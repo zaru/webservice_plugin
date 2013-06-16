@@ -19,6 +19,18 @@
  **/
 class WebserviceComponent extends Component {
 
+	public $settings = array();
+
+/**
+ * Constructor
+ *
+ * @param ComponentCollection $collection A ComponentCollection for this component
+ * @param array $settings Array of settings.
+ */
+	public function __construct(ComponentCollection $collection, $settings = array()) {
+		$this->settings = $settings;
+	}
+	
 /**
  * Called before the Controller::beforeFilter().
  *
@@ -27,23 +39,25 @@ class WebserviceComponent extends Component {
  * @access public
  * @link http://book.cakephp.org/view/65/MVC-Class-Access-Within-Components
  */
-	public function initialize(&$controller, $settings = array()) {
-		$settings = array_merge(array(
-			'blacklist' => array(),
-		), (array) $settings);
+	public function initialize(&$controller) {
 
+		$this->settings = array_merge(array(
+			'blacklist' => array(),
+		), (array) $this->settings);
 		if (isset($controller->webserviceBlacklist)) {
-			$settings['blacklist'] = array_merge(
-				(array) $settings['blacklist'],
+			$this->settings['blacklist'] = array_merge(
+				(array) $this->settings['blacklist'],
 				(array) $controller->webserviceBlacklist
 			);
 		}
 
-		if (in_array('*', $settings['blacklist'])) {
+		if (in_array('*', $this->settings['blacklist'])) {
+			throw new MethodNotAllowedException();
 			return;
 		}
-
-		if (in_array($controller->request->params['action'], $settings['blacklist'])) {
+		
+		if (in_array($controller->request->params['action'], $this->settings['blacklist'])) {
+			throw new MethodNotAllowedException();
 			return;
 		}
 
